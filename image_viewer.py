@@ -204,7 +204,31 @@ image_viewer_column2 = [
 ]
 
 # Kolom Area No 5: Area Image info dan Tombol list of processing UTS
-list_processing_uts = [
+list_processing_2 = [
+  [
+    sg.Frame('Filter', [
+      [
+        sg.Button("Max", size=(11, 1), key="MaxFilter"),
+        sg.Button("Min", size=(11, 1), key="MinFilter"),
+      ],
+      [
+        sg.Button("Median", size=(11, 1), key="MedianFilter"),
+        sg.Button("Mean", size=(11, 1), key="MeanFilter"),
+      ],
+      [
+        sg.Button("Sobel", size=(11, 1), key="SobelFilter"),
+        sg.Button("Prewitt", size=(11, 1), key="PrewittFilter"),
+      ],
+      [
+        sg.Button("Robert", size=(11, 1), key="RobertFilter"),
+        sg.Button("Laplacian", size=(11, 1), key="LaplacianFilter"),
+      ],
+      [
+        sg.Button("Scharr", size=(11, 1), key="ScharrFilter"),
+        sg.Button("Gaussian", size=(11, 1), key="GaussianFilter"),
+      ]
+    ], font = ("OpenSans", 10))
+  ],
   [
     sg.Frame('Ujian Praktikum 1', [
       [
@@ -267,7 +291,7 @@ layout = [
   sg.VSeperator(),
   sg.Column(image_viewer_column2),
   sg.VSeperator(),
-  sg.Column(list_processing_uts),
+  sg.Column(list_processing_2),
   ]
 ]
 
@@ -710,7 +734,7 @@ while True:
       pass
     
   elif event == "UTS":
-    
+    try:
       window["ImgProcessingType"].update("UTS")
       # img_output=reverse_x_simbol_negative(img_input,coldepth)
       alpha1 = values["utsAlpha1"]
@@ -720,3 +744,95 @@ while True:
         
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "MedianFilter":
+    
+      window["ImgProcessingType"].update("Median Filter")
+      
+      img_output=Median(img_input, coldepth)
+      
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+      
+  elif event == "MeanFilter":
+    
+      window["ImgProcessingType"].update("Mean Filter")
+      
+      img_output=Mean(img_input, coldepth)
+      
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+      
+  elif event == "MaxFilter":
+    
+      window["ImgProcessingType"].update("Max Filter")
+      
+      img_output=Max(img_input, coldepth)
+      
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+      
+  elif event == "MinFilter":
+    
+      window["ImgProcessingType"].update("Min Filter")
+      
+      img_output=Min(img_input, coldepth)
+      
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+      
+  elif event == "SobelFilter":
+    try:
+      window["ImgProcessingType"].update("Sobel Detection")
+      img_output=Edge(img_input,coldepth, "sobel")
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "PrewittFilter":
+    try:
+      window["ImgProcessingType"].update("Prewitt Detection")
+      img_output=Edge(img_input,coldepth, "prewitt")
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+        
+  elif event == "LaplacianFilter":
+    try:
+      window["ImgProcessingType"].update("Laplacian Detection")
+      img_output=Edge(img_input,coldepth, "laplacian")
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "ScharrFilter":
+    try:
+      window["ImgProcessingType"].update("Scharr Detection")
+      img_output=Edge(img_input,coldepth, "scharr")
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+        
+  elif event == "RobertFilter":
+    try:
+      window["ImgProcessingType"].update("Robert Detection")
+      img_output=Edge(img_input,coldepth, "robert")
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "GaussianFilter":
+    try:
+      window["ImgProcessingType"].update("Gaussian Filter")
+      img_output=Gaussian(img_input,coldepth, 1)
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
