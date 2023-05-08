@@ -1,15 +1,15 @@
 from PIL import Image, ImageOps
 import math
 
-def imageResize(img, width, height):
-  widthRatio = width/img.size[0]
-  heightRatio = height/img.size[1]
+# def imageResize(img, width, height):
+#   widthRatio = width/img.size[0]
+#   heightRatio = height/img.size[1]
     
-  newWidth = int(widthRatio*img.size[0])
-  newHeight = int(heightRatio*img.size[1])
+#   newWidth = int(widthRatio*img.size[0])
+#   newHeight = int(heightRatio*img.size[1])
     
-  newImage = img.resize((newWidth, newHeight))
-  return newImage
+#   newImage = img.resize((newWidth, newHeight))
+#   return newImage
 
 # def ImgNegative(img_input,coldepth):
 #   #solusi 1
@@ -36,12 +36,17 @@ def imageResize(img, width, height):
 #   return img_output 
 
 def ImgNegative(img, coldepth):
+  if coldepth!=24:
+    img_input = img_input.convert('RGB')
+  
   width, height = img.size
   img_output = Image.new('RGB', (width, height))
+  
   for i in range(width):
     for j in range(height):
       r, g, b = img.getpixel((i, j))
       img_output.putpixel((i, j), (255 - r, 255 - g, 255 - b))
+      
   return img_output
 
 def ImgGrayscale(img_input,coldepth):
@@ -200,6 +205,7 @@ def ImgLogaritma (img_input, coldepth, constant):
           green = 0
       if(blue < 0):
           blue = 0
+          
       pixels[i,j] = (int(red), int(green), int(blue))
   
   if coldepth==1:
@@ -818,7 +824,7 @@ def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2, posX, p
   
   if coldepth!=24:
     img_input = img_input.convert('RGB')
-  elif coldepth2!=24:
+  if coldepth2!=24:
     img_input2 = img_input2.convert('RGB')
     
   img_output = Image.new('RGB',(img_input.size[0],img_input.size[1]))
@@ -892,21 +898,36 @@ def bubble_sort(array):
 
 # Filter
 def Median(img_input, coldepth):
-  if coldepth != 24:
-    img_input.convert('RGB')
+  if coldepth!=24:
+    img_input = img_input.convert('RGB')
   
   row = int(img_input.size[0])
   col = int(img_input.size[1])
   
   img_output = Image.new('RGB', (row, col))
   
-  img_input = ImageOps.expand(img_input, border=1, fill=255)
+  # memberi border (alternatif)
+  # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
+  
+  # sulusi memberi border 2
+  img_bordered = Image.new('RGB', (row + 2, col + 2))
+  pixels = img_bordered.load()
+  pixels_input = img_input.load()
+  
+  for i in range(img_input.size[0] - 1):
+    for j in range(img_input.size[1] - 1):
+      x = 1 + i
+      y = 1 + j
+      r1, g1, b1 = pixels_input[(i, j)]
+      if x >= 0 and x < img_bordered.size[0] and y >= 0 and y < img_bordered.size[1]:
+        r, g, b = pixels[x, y]
+        pixels[x, y] = (r1, g1, b1)
   
   print(row)
   print(col)
   
-  print(img_input.size[0])
-  print(img_input.size[1])
+  print(img_bordered.size[0])
+  print(img_bordered.size[1])
   
   mask = [(0,0)] * 9
   for i in range(1, row + 1):
@@ -920,15 +941,15 @@ def Median(img_input, coldepth):
       # elif row == row - 1 and col == 0:
       # elif row == 0 and col == col - 1 :
       
-      mask[0] = img_input.getpixel((i-1, j-1))
-      mask[1] = img_input.getpixel((i-1, j))
-      mask[2] = img_input.getpixel((i-1, j+1))
-      mask[3] = img_input.getpixel((i, j-1))
-      mask[4] = img_input.getpixel((i, j))
-      mask[5] = img_input.getpixel((i, j+1))
-      mask[6] = img_input.getpixel((i+1, j-1))
-      mask[7] = img_input.getpixel((i+1, j))
-      mask[8] = img_input.getpixel((i+1, j+1)) 
+      mask[0] = img_bordered.getpixel((i-1, j-1))
+      mask[1] = img_bordered.getpixel((i-1, j))
+      mask[2] = img_bordered.getpixel((i-1, j+1))
+      mask[3] = img_bordered.getpixel((i, j-1))
+      mask[4] = img_bordered.getpixel((i, j))
+      mask[5] = img_bordered.getpixel((i, j+1))
+      mask[6] = img_bordered.getpixel((i+1, j-1))
+      mask[7] = img_bordered.getpixel((i+1, j))
+      mask[8] = img_bordered.getpixel((i+1, j+1)) 
       
       # alternatif
       # mask.sort()
@@ -938,36 +959,51 @@ def Median(img_input, coldepth):
       img_output.putpixel((i - 1, j - 1),(mask[4]))
       
   return img_output
-      
+
 def Max(img_input, coldepth):
   if coldepth != 24:
     img_input.convert('RGB')
-
+  
   row = int(img_input.size[0])
   col = int(img_input.size[1])
   
   img_output = Image.new('RGB', (row, col))
   
-  img_input = ImageOps.expand(img_input, border=1, fill=255)
+  # memberi border (alternatif)
+  # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
+  
+  # sulusi memberi border 2
+  img_bordered = Image.new('RGB', (row + 2, col + 2))
+  pixels = img_bordered.load()
+  pixels_input = img_input.load()
+  
+  for i in range(img_input.size[0]):
+    for j in range(img_input.size[1]):
+      x = 1 + i
+      y = 1 + j
+      r1, g1, b1 = pixels_input[i,j]
+      if x >= 0 and x < img_bordered.size[0] and y >= 0 and y < img_bordered.size[1]:
+        r, g, b = pixels[x, y]
+        pixels[x, y] = (r1, g1, b1)
   
   print(row)
   print(col)
   
-  print(img_input.size[0])
-  print(img_input.size[1])
+  print(img_bordered.size[0])
+  print(img_bordered.size[1])
   
   mask = [(0,0)] * 9
   for i in range(1, row + 1):
-    for j in range(1, col + 1):
-      mask[0] = img_input.getpixel((i-1, j-1))
-      mask[1] = img_input.getpixel((i-1, j))
-      mask[2] = img_input.getpixel((i-1, j+1))
-      mask[3] = img_input.getpixel((i, j-1))
-      mask[4] = img_input.getpixel((i, j))
-      mask[5] = img_input.getpixel((i, j+1))
-      mask[6] = img_input.getpixel((i+1, j-1))
-      mask[7] = img_input.getpixel((i+1, j))
-      mask[8] = img_input.getpixel((i+1, j+1)) 
+    for j in range(1, col + 1):   
+      mask[0] = img_bordered.getpixel((i-1, j-1))
+      mask[1] = img_bordered.getpixel((i-1, j))
+      mask[2] = img_bordered.getpixel((i-1, j+1))
+      mask[3] = img_bordered.getpixel((i, j-1))
+      mask[4] = img_bordered.getpixel((i, j))
+      mask[5] = img_bordered.getpixel((i, j+1))
+      mask[6] = img_bordered.getpixel((i+1, j-1))
+      mask[7] = img_bordered.getpixel((i+1, j))
+      mask[8] = img_bordered.getpixel((i+1, j+1)) 
       
       # alternatif
       # mask.sort()
@@ -975,45 +1011,53 @@ def Max(img_input, coldepth):
       array = bubble_sort(mask)
 
       img_output.putpixel((i - 1, j - 1),(mask[8]))
+      
+  return img_output
 
-  if coldepth==1:
-    img_output = img_output.convert("1")
-  elif coldepth==8:
-    img_output = img_output.convert("L")
-  else:
-    img_output = img_output.convert("RGB")
-
-  return img_output 
- 
 def Min(img_input, coldepth):
   if coldepth != 24:
     img_input.convert('RGB')
-
+  
   row = int(img_input.size[0])
   col = int(img_input.size[1])
   
   img_output = Image.new('RGB', (row, col))
   
-  img_input = ImageOps.expand(img_input, border=1, fill=255)
+  # memberi border (alternatif)
+  # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
+  
+  # sulusi memberi border 2
+  img_bordered = Image.new('RGB', (row + 2, col + 2))
+  pixels = img_bordered.load()
+  pixels_input = img_input.load()
+  
+  for i in range(img_input.size[0]):
+    for j in range(img_input.size[1]):
+      x = 1 + i
+      y = 1 + j
+      r1, g1, b1 = pixels_input[i,j]
+      if x >= 0 and x < img_bordered.size[0] and y >= 0 and y < img_bordered.size[1]:
+        r, g, b = pixels[x, y]
+        pixels[x, y] = (r1, g1, b1)
   
   print(row)
   print(col)
   
-  print(img_input.size[0])
-  print(img_input.size[1])
+  print(img_bordered.size[0])
+  print(img_bordered.size[1])
   
   mask = [(0,0)] * 9
   for i in range(1, row + 1):
     for j in range(1, col + 1):
-      mask[0] = img_input.getpixel((i-1, j-1))
-      mask[1] = img_input.getpixel((i-1, j))
-      mask[2] = img_input.getpixel((i-1, j+1))
-      mask[3] = img_input.getpixel((i, j-1))
-      mask[4] = img_input.getpixel((i, j))
-      mask[5] = img_input.getpixel((i, j+1))
-      mask[6] = img_input.getpixel((i+1, j-1))
-      mask[7] = img_input.getpixel((i+1, j))
-      mask[8] = img_input.getpixel((i+1, j+1)) 
+      mask[0] = img_bordered.getpixel((i-1, j-1))
+      mask[1] = img_bordered.getpixel((i-1, j))
+      mask[2] = img_bordered.getpixel((i-1, j+1))
+      mask[3] = img_bordered.getpixel((i, j-1))
+      mask[4] = img_bordered.getpixel((i, j))
+      mask[5] = img_bordered.getpixel((i, j+1))
+      mask[6] = img_bordered.getpixel((i+1, j-1))
+      mask[7] = img_bordered.getpixel((i+1, j))
+      mask[8] = img_bordered.getpixel((i+1, j+1)) 
       
       # alternatif
       # mask.sort()
@@ -1021,16 +1065,8 @@ def Min(img_input, coldepth):
       array = bubble_sort(mask)
 
       img_output.putpixel((i - 1, j - 1),(mask[0]))
-
-  if coldepth==1:
-    img_output = img_output.convert("1")
-  elif coldepth==8:
-    img_output = img_output.convert("L")
-  else:
-    img_output = img_output.convert("RGB")
-
-  return img_output  
-
+      
+  return img_output
 
 def Mean(img_input, coldepth):
   if coldepth != 24:
@@ -1038,13 +1074,27 @@ def Mean(img_input, coldepth):
 
   row = int(img_input.size[0])
   col = int(img_input.size[1])
-  
+    
   img_output = Image.new('RGB', (row, col))
-  
+    
   # memberi border (alternatif)
-  img_input = ImageOps.expand(img_input, border=1, fill=255)
+  # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
   
-  img_output.show()
+  # sulusi memberi border 2
+  img_bordered = Image.new('RGB', (row + 2, col + 2))
+  pixels = img_bordered.load()
+  pixels_input = img_input.load()
+  
+  for i in range(img_input.size[0]):
+    for j in range(img_input.size[1]):
+      x = 1 + i
+      y = 1 + j
+      r1, g1, b1 = pixels_input[i,j]
+      if x >= 0 and x < img_bordered.size[0] and y >= 0 and y < img_bordered.size[1]:
+        r, g, b = pixels[x, y]
+        pixels[x, y] = (r1, g1, b1)
+  
+  # img_bordered.show()
   
   pixels = img_output.load()
     
@@ -1055,15 +1105,15 @@ def Mean(img_input, coldepth):
       red = 0
       green = 0
       blue = 0
-      mask[0] = img_input.getpixel((i-1,j-1))
-      mask[1] = img_input.getpixel((i-1,j))
-      mask[2] = img_input.getpixel((i-1,j+1))
-      mask[3] = img_input.getpixel((i,j-1))
-      mask[4] = img_input.getpixel((i,j))
-      mask[5] = img_input.getpixel((i,j+1))
-      mask[6] = img_input.getpixel((i+1,j-1))
-      mask[7] = img_input.getpixel((i+1,j))
-      mask[8] = img_input.getpixel((i+1,j+1))
+      mask[0] = img_bordered.getpixel((i-1,j-1))
+      mask[1] = img_bordered.getpixel((i-1,j))
+      mask[2] = img_bordered.getpixel((i-1,j+1))
+      mask[3] = img_bordered.getpixel((i,j-1))
+      mask[4] = img_bordered.getpixel((i,j))
+      mask[5] = img_bordered.getpixel((i,j+1))
+      mask[6] = img_bordered.getpixel((i+1,j-1))
+      mask[7] = img_bordered.getpixel((i+1,j))
+      mask[8] = img_bordered.getpixel((i+1,j+1))
             
       for k in range(8):
         r, g, b = mask[k]
@@ -1196,8 +1246,6 @@ def Edge(img_input, coldepth, type):
     
   return img_output
 
-from math import exp
-
 def Gaussian(img_input, coldepth, sigma=1):
   if coldepth != 24:
     img_input = img_input.convert('RGB')
@@ -1208,8 +1256,21 @@ def Gaussian(img_input, coldepth, sigma=1):
   img_output = Image.new('RGB', (row, col))
     
   # memberi border (alternatif)
-  img_input = ImageOps.expand(img_input, border=1, fill=255)
-
+  # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
+  
+  # sulusi memberi border 2
+  img_bordered = Image.new('RGB', (row + 2, col + 2))
+  pixels = img_bordered.load()
+  
+  for i in range(img_input.size[0]):
+    for j in range(img_input.size[1]):
+      x = 1 + i
+      y = 1 + j
+      r1, g1, b1 = img_input.getpixel((i, j))
+      if x >= 0 and x < img_bordered.size[0] and y >= 0 and y < img_bordered.size[1]:
+        r, g, b = pixels[x, y]
+        pixels[x, y] = (r1, g1, b1)
+  
   pixels = img_output.load()
 
   mask = [(0,0)] * 9
@@ -1221,7 +1282,7 @@ def Gaussian(img_input, coldepth, sigma=1):
     for j in range(3):
       x = i - 1
       y = j - 1
-      weight = exp(-(x**2 + y**2)/(2*sigma**2)) / (2 * 3.14159 * sigma**2)
+      weight = math.exp(-(x**2 + y**2)/(2*sigma**2)) / (2 * 3.14159 * sigma**2)
       total_weight += weight
       weights[i*3+j] = weight
 
@@ -1236,15 +1297,15 @@ def Gaussian(img_input, coldepth, sigma=1):
       blue = 0
 
       # mengambil nilai piksel dari mask
-      mask[0] = img_input.getpixel((i-1,j-1))
-      mask[1] = img_input.getpixel((i-1,j))
-      mask[2] = img_input.getpixel((i-1,j+1))
-      mask[3] = img_input.getpixel((i,j-1))
-      mask[4] = img_input.getpixel((i,j))
-      mask[5] = img_input.getpixel((i,j+1))
-      mask[6] = img_input.getpixel((i+1,j-1))
-      mask[7] = img_input.getpixel((i+1,j))
-      mask[8] = img_input.getpixel((i+1,j+1))
+      mask[0] = img_bordered.getpixel((i-1,j-1))
+      mask[1] = img_bordered.getpixel((i-1,j))
+      mask[2] = img_bordered.getpixel((i-1,j+1))
+      mask[3] = img_bordered.getpixel((i,j-1))
+      mask[4] = img_bordered.getpixel((i,j))
+      mask[5] = img_bordered.getpixel((i,j+1))
+      mask[6] = img_bordered.getpixel((i+1,j-1))
+      mask[7] = img_bordered.getpixel((i+1,j))
+      mask[8] = img_bordered.getpixel((i+1,j+1))
 
       # mengalikan nilai piksel dengan bobot
       for k in range(9):
