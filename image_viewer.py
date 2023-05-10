@@ -1,3 +1,5 @@
+# github.com/dharmasaputraa
+
 import PySimpleGUI as sg
 import os.path
 from PIL import Image, ImageOps

@@ -1,3 +1,5 @@
+# github.com/dharmasaputraa
+
 from PIL import Image, ImageOps
 import math
 
@@ -227,6 +229,8 @@ def ImgGamma(img_input,coldepth,constant):
     img_output = img_output.convert("RGB")
         
   return img_output
+
+# github.com/dharmasaputraa
 
 def ImgFlipHorizontal(img_input,coldepth):
   #solusi 1
