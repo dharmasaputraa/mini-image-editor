@@ -927,6 +927,7 @@ def Min(img_input, coldepth):
   # memberi border (alternatif)
   # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
   
+  # github.com/dharmasaputraa
   # sulusi memberi border 2
   img_bordered = Image.new('RGB', (row + 2, col + 2))
   pixels = img_bordered.load()
@@ -981,6 +982,7 @@ def Mean(img_input, coldepth):
   # memberi border (alternatif)
   # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
   
+  # github.com/dharmasaputraa
   # sulusi memberi border 2
   img_bordered = Image.new('RGB', (row + 2, col + 2))
   pixels = img_bordered.load()
@@ -1229,3 +1231,5 @@ def Gaussian(img_input, coldepth, sigma=1):
     img_output = img_output.convert("RGB")
 
   return img_output
+
+# github.com/dharmasaputraa

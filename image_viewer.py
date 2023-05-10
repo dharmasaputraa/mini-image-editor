@@ -824,3 +824,5 @@ while True:
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
       pass
+
+# github.com/dharmasaputraa
