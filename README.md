@@ -1,2 +1,2 @@
 # mini-image-editor by Dharmasaputra
-# github.com/dharmasaputraa
+github.com/dharmasaputraa
