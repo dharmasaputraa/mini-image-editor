@@ -1,44 +1,14 @@
 from PIL import Image, ImageOps
 import math
 
-# def imageResize(img, width, height):
-#   widthRatio = width/img.size[0]
-#   heightRatio = height/img.size[1]
-    
-#   newWidth = int(widthRatio*img.size[0])
-#   newHeight = int(heightRatio*img.size[1])
-    
-#   newImage = img.resize((newWidth, newHeight))
-#   return newImage
-
-# def ImgNegative(img_input,coldepth):
-#   #solusi 1
-#   #img_output = ImageOps.invert(img_input)
-
-#   #solusi 2
-#   if coldepth!=24:
-#     img_input = img_input.convert('RGB')
-
-#   img_output = Image.new('RGB',(img_input.size[0],img_input.size[1]))
-#   pixels = img_output.load()
-#   for i in range(img_output.size[0]):
-#     for j in range(img_output.size[1]):
-#       r, g, b = img_input.getpixel((i, j))
-#       pixels[i,j] = (255-r, 255-g, 255-b)
-
-#   if coldepth==1:
-#     img_output = img_output.convert("1")
-#   elif coldepth==8:
-#     img_output = img_output.convert("L")
-#   else:
-#     img_output = img_output.convert("RGB")
-
-#   return img_output 
-
 def ImgNegative(img, coldepth):
   if coldepth!=24:
     img_input = img_input.convert('RGB')
   
+  # solusi 1
+  # img_output = ImageOps.invert(img_input)
+  
+  # solusi 2
   width, height = img.size
   img_output = Image.new('RGB', (width, height))
   
@@ -516,36 +486,43 @@ def ZoomOut(img_input, coldepth, scaleVal):
 
   return img_output   
 
-# def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2):
+def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2, posX, posY):
+  
+  if coldepth!=24:
+    img_input = img_input.convert('RGB')
+  if coldepth2!=24:
+    img_input2 = img_input2.convert('RGB')
+    
+  img_output = Image.new('RGB',(img_input.size[0],img_input.size[1]))
+  pixels = img_output.load()
+  
+  # Perulangan untuk menumpuk image_input/image1 pada image_output/image baru
+  for i in range(img_output.size[0]):
+    for j in range(img_output.size[1]):
+      r, g, b = img_input.getpixel((i, j))
+      pixels[i, j] = (r, g, b)
+  
+  # Perulangan untuk menumpuk image_negatif pada image_output/image baru
+  for i in range(img_input2.size[0]):
+    for j in range(img_input2.size[1]):
+      x = posX + i
+      y = posY + j
+      r1, g1, b1 = img_input2.getpixel((i, j))
+      if x >= 0 and x < img_output.size[0] and y >= 0 and y < img_output.size[1]:
+        r, g, b = pixels[x, y]
+        r1 = int(r*alpha1) + int(r1*alpha2)
+        g1 = int(g*alpha1) + int(g1*alpha2)
+        b1 =  + int(b*alpha1) + int(b1*alpha2)
+        pixels[x, y] = (r1, g1, b1)
+  
+  if coldepth==1:
+    img_output = img_output.convert("1")
+  elif coldepth==8:
+    img_output = img_output.convert("L")
+  else:
+    img_output = img_output.convert("RGB")
 
-#   # img_input = imageResize(300, 300, img_input)
-#   # img_input2 = imageResize(300, 300, img_input2)
-  
-#   if coldepth!=24:
-#     img_input = img_input.convert('RGB')
-#   elif coldepth2!=24:
-#     img_input2 = img_input2.convert('RGB')
-      
-#   img_output = Image.new('RGB',(img_input.size[0],img_input.size[1]))
-#   pixels = img_output.load()
-  
-#   for i in range(img_output.size[0]):
-#     for j in range(img_output.size[1]):
-#       color1 = img_input.getpixel((i, j))
-#       color2 = img_input2.getpixel((i, j))
-#       r = int(color1[0]*alpha1) + int(color2[0]*alpha2)
-#       g = int(color1[1]*alpha1) + int(color2[1]*alpha2)
-#       b = int(color1[2]*alpha1) + int(color2[2]*alpha2)
-#       pixels[i,j] =  (r, g, b)
-  
-#   if coldepth==1:
-#     img_output = img_output.convert("1")
-#   elif coldepth==8:
-#     img_output = img_output.convert("L")
-#   else:
-#     img_output = img_output.convert("RGB")
-
-#   return img_output 
+  return img_output 
 
 # UTS
 def merge_flipped_images(img_original, coldepth):
@@ -787,77 +764,6 @@ def reverse_x_simbol_negative(img_input, coldepth):
 
   return img_output
 
-# def uts_1(img_input, coldepth, img_input2, coldepth2):
-#   if coldepth!=24:
-#     img_input = img_input.convert('RGB')
-#   elif coldepth2!=24:
-#     img_input2 = img_input2.convert('RGB')
-    
-#   img_negatived = ImgNegative(img_input2, coldepth2)
-    
-#   center_x = img_negatived.size[0] // 2
-#   center_y = img_negatived.size[1] // 2
-  
-#   img_output = Image.new('RGB',(img_input.size[0],img_input.size[1]))
-#   pixels = img_output.load()
-  
-#   for i in range(img_output.size[0]):
-#     for j in range(img_output.size[1]):
-#       r, g, b = img_input.getpixel((i, j))
-#       pixels[i, j] = (r, g, b)
-  
-#   for i in range(img_negatived.size[0]):
-#     for j in range(img_negatived.size[1]):
-#       x = center_x + i
-#       y = center_y + j
-#       r1, g1, b1 = img_negatived.getpixel((i, j))
-#       if r1 != 0 and g1 != 0 and b1 != 0 and x >= 0 and x < img_output.size[0] and y >= 0 and y < img_output.size[1]:
-#         r, g, b = pixels[x, y]
-#         pixels[x, y] = (r1, g1, b1)
-  
-#   return img_output
-
-def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2, posX, posY):
-
-  # img_input = imageResize(300, 300, img_input)
-  # img_input2 = imageResize(300, 300, img_input2)
-  
-  if coldepth!=24:
-    img_input = img_input.convert('RGB')
-  if coldepth2!=24:
-    img_input2 = img_input2.convert('RGB')
-    
-  img_output = Image.new('RGB',(img_input.size[0],img_input.size[1]))
-  pixels = img_output.load()
-  
-  # Perulangan untuk menumpuk image_input/image1 pada image_output/image baru
-  for i in range(img_output.size[0]):
-    for j in range(img_output.size[1]):
-      r, g, b = img_input.getpixel((i, j))
-      pixels[i, j] = (r, g, b)
-  
-  # Perulangan untuk menumpuk image_negatif pada image_output/image baru
-  for i in range(img_input2.size[0]):
-    for j in range(img_input2.size[1]):
-      x = posX + i
-      y = posY + j
-      r1, g1, b1 = img_input2.getpixel((i, j))
-      if x >= 0 and x < img_output.size[0] and y >= 0 and y < img_output.size[1]:
-        r, g, b = pixels[x, y]
-        r1 = int(r*alpha1) + int(r1*alpha2)
-        g1 = int(g*alpha1) + int(g1*alpha2)
-        b1 =  + int(b*alpha1) + int(b1*alpha2)
-        pixels[x, y] = (r1, g1, b1)
-  
-  if coldepth==1:
-    img_output = img_output.convert("1")
-  elif coldepth==8:
-    img_output = img_output.convert("L")
-  else:
-    img_output = img_output.convert("RGB")
-
-  return img_output 
-
 def uts_1(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2):
   alpha1 = float(alpha1)
   alpha2 = float(alpha2)
@@ -932,15 +838,6 @@ def Median(img_input, coldepth):
   mask = [(0,0)] * 9
   for i in range(1, row + 1):
     for j in range(1, col + 1):
-      # if row == 0 and col != 0:
-      # elif col == 0 and row != 0:
-      # elif row == row - 1 and col != 0:
-      # elif col == col - 1 and row != 0:
-      # elif row == 0 and col == 0:
-      # elif row == row - 1 and col == col - 1:
-      # elif row == row - 1 and col == 0:
-      # elif row == 0 and col == col - 1 :
-      
       mask[0] = img_bordered.getpixel((i-1, j-1))
       mask[1] = img_bordered.getpixel((i-1, j))
       mask[2] = img_bordered.getpixel((i-1, j+1))
