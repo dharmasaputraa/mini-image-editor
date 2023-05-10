@@ -420,23 +420,14 @@ while True:
   # button in basic image processing
   elif event == "ImgThreshold":
     op_button = "ImgThreshold"
-    print(op_button)
   elif event == "ImgLog":
     op_button = "ImgLog"
-    print(op_button)
   elif event == "ImgGamma":
     op_button = "ImgGamma"
-    print(op_button)
   elif event == "ZoomIn":
     op_button = "ZoomIn"
-    print(op_button)
   elif event == "ZoomOut":
     op_button = "ZoomOut"
-    print(op_button)
-  # elif event == "ImgTranslation":
-  #   op_button = "ImgTranslation"
-  #   print(op_button)
-  #   print(values['XTrans'])
 
   elif event == "ImgNegative":
 
@@ -585,8 +576,6 @@ while True:
     window["inputImage2"].update("Image 2 Input :")
     window["chooseImage2"].update(visible=True)
     window["infoImage2"].update(visible=True)
-    print(coldepth)
-    print(coldepth1)
   
   elif event == "ImgBlendProcess":
     # try:
@@ -634,13 +623,10 @@ while True:
   
   elif event == "ImgTranslation":
     try:
-      print(op_button)
       window["ImgProcessingType"].update("Image Translation X = " + str(values["XTrans"]) + " and Y = " + str(values["YTrans"]))
       
       transX = int(values["XTrans"])
       transY = int(values["YTrans"])
-      print(transX)
-      print(transY)
       img_output=ImgTranslation(img_input,coldepth, transX, transY)
               
       img_output.save(filename_out)
