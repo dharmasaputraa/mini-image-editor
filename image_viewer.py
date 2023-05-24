@@ -50,7 +50,7 @@ file_list_column = [
         sg.Text("Color Depth : "),
         sg.Text(size=(13, 1), key="ImgColorDepth1")
       ], 
-    ], font = ("OpenSans", 10), visible=True, key="infoImage2")
+    ], font = ("OpenSans", 10), visible=False, key="infoImage2")
   ],
   [
     sg.Frame('Choose image 2', [
@@ -63,35 +63,11 @@ file_list_column = [
         values=[], enable_events=True, size=(25, 10), key="ImgList1"
         )
       ],
-    ], font = ("OpenSans", 10), visible = True, key="chooseImage2" ),
+    ], font = ("OpenSans", 10), visible = False, key="chooseImage2" ),
   ],
   [
     sg.Button("Clear", size=(25, 1), key="clearImage"),
   ],
-]
-# Kolom Area No 2: Area viewer image input
-image_viewer_column = [
-  [
-    sg.Text("Image 1 Input :")
-  ],
-  [
-    sg.Text(size=(40, 1), key="FilepathImgInput")
-  ],
-  [
-    sg.Image(key="ImgInputViewer")
-  ],
-  [
-    sg.Text("", key="inputImage2")
-  ],
-  [
-    sg.Text(size=(40, 1), key="FilepathImgInput1")
-  ],
-  [
-    sg.Image(key="ImgInputViewer1")
-  ], 
-]
-# Kolom Area No 3: Area Image info dan Tombol list of processing
-list_processing = [
   [
     sg.Frame('Basic Image Processing', [
       [
@@ -127,6 +103,65 @@ list_processing = [
       ],
     ], font = ("OpenSans", 10))
   ],
+]
+# Kolom Area No 2: Area viewer image input
+image_viewer_column = [
+  [
+    sg.Text("Image 1 Input :")
+  ],
+  [
+    sg.Text(size=(40, 1), key="FilepathImgInput")
+  ],
+  [
+    sg.Image(key="ImgInputViewer")
+  ],
+  [
+    sg.Text("", key="inputImage2")
+  ],
+  [
+    sg.Text(size=(40, 1), key="FilepathImgInput1")
+  ],
+  [
+    sg.Image(key="ImgInputViewer1")
+  ], 
+]
+# Kolom Area No 3: Area Image info dan Tombol list of processing
+list_processing = [
+  # [
+  #   sg.Frame('Basic Image Processing', [
+  #     [
+  #       sg.Button("Negative", size=(11, 1), key="ImgNegative"),
+  #       sg.Button("Grayscale", size=(11, 1), key="ImgGrayscale"),
+  #     ],
+  #     [
+  #       sg.Frame("Brightness", [
+  #         [
+  #           sg.Slider(range=(-255,255), default_value=0, size=(21, 10), orientation='horizontal', key="Brightness", enable_events=True, visible = True)
+  #         ],
+  #         [
+  #           sg.Text("(*):", key="TitleMulConst", visible = True),
+  #           sg.In(size=(7, 1), enable_events=True, key="MulConst", visible = True),
+  #           sg.Text("(/):", key="TitleDivConst", visible = True,),
+  #           sg.In(size=(8, 1), enable_events=True, key="DivConst", visible = True),
+  #         ],
+  #       ], font = ("OpenSans", 10)),
+  #     ],
+  #     [
+  #       sg.Frame("", [
+  #         [
+  #           sg.Button("Threshold", size=(22, 1), key="ImgThreshold"),
+  #         ],
+  #         [
+  #           sg.Button("Logarithm", size=(10, 1), key="ImgLog"),
+  #           sg.Button("Power-low", size=(10, 1), key="ImgGamma"),
+  #         ],
+  #         [
+  #           sg.Slider(range=(0,255), default_value=0, size=(21, 10), orientation='horizontal', key="otherConst", enable_events=True, visible = True)
+  #         ]
+  #       ], font = ("OpenSans", 10))
+  #     ],
+  #   ], font = ("OpenSans", 10))
+  # ],
   [
     sg.Frame('Image Processing', [
       [
@@ -191,7 +226,7 @@ list_processing = [
             sg.Text("Range a1&a2 = 0.0 - 1", visible = True, font = ("OpenSans", 8)),
           ],
           [
-            sg.Text("Range x,y = sesuai dengan wxh gambar", visible = True, font = ("OpenSans", 8)),
+            sg.Text("Range x,y = sesuai dengan wxh image", visible = True, font = ("OpenSans", 8)),
           ],
         ], font = ("OpenSans", 10)),
       ],
@@ -208,58 +243,34 @@ image_viewer_column2 = [
 # Kolom Area No 5: Area Image info dan Tombol list of processing UTS
 list_processing_2 = [
   [
-    sg.Frame('Filter', [
-      [
-        sg.Button("Max", size=(11, 1), key="MaxFilter"),
-        sg.Button("Min", size=(11, 1), key="MinFilter"),
-      ],
-      [
-        sg.Button("Median", size=(11, 1), key="MedianFilter"),
-        sg.Button("Mean", size=(11, 1), key="MeanFilter"),
-      ],
-      [
-        sg.Button("Sobel", size=(11, 1), key="SobelFilter"),
-        sg.Button("Prewitt", size=(11, 1), key="PrewittFilter"),
-      ],
-      [
-        sg.Button("Robert", size=(11, 1), key="RobertFilter"),
-        sg.Button("Laplacian", size=(11, 1), key="LaplacianFilter"),
-      ],
-      [
-        sg.Button("Scharr", size=(11, 1), key="ScharrFilter"),
-        sg.Button("Gaussian", size=(11, 1), key="GaussianFilter"),
-      ]
-    ], font = ("OpenSans", 10))
-  ],
-  [
     sg.Frame('Ujian Praktikum 1', [
       [
         sg.Frame("Negative", [
           [
             sg.Frame("", [
               [
-                sg.Button("Diamond", size=(8, 1), key="NegDiamond"),
-                sg.Button("RevDiamond", size=(10, 1), key="NegRevDiamond"),
+                sg.Button("Diamond", size=(7, 1), key="NegDiamond"),
+                sg.Button("RevDiamond", size=(9, 1), key="NegRevDiamond"),
               ],
               # [
               #   sg.Button("Circle", size=(8, 1), key="NegCircle"),
               #   sg.Button("RevCircle", size=(10, 1), key="NegRevCircle"),
               # ],
               [
-                sg.Slider(range=(0,255), default_value=0, size=(19, 10), orientation='horizontal', key="whNegative", enable_events=True, visible = True)
+                sg.Slider(range=(0,255), default_value=0, size=(17, 10), orientation='horizontal', key="whNegative", enable_events=True, visible = True)
               ]
             ])
           ],
           [
-            sg.Button("X", size=(10, 1), key="NegX"),
-            sg.Button("RevX", size=(10, 1), key="NegRevX")
+            sg.Button("X", size=(9, 1), key="NegX"),
+            sg.Button("RevX", size=(9, 1), key="NegRevX")
           ]
         ], font = ("OpenSans", 10)),
       ],
       [
         sg.Frame("Mirror", [
           [
-            sg.Button("Merge", size=(22, 1), key="MirrorMerge"),
+            sg.Button("Merge", size=(20, 1), key="MirrorMerge"),
           ],
         ], font = ("OpenSans", 10)),
       ],
@@ -268,19 +279,58 @@ list_processing_2 = [
   [
     sg.Frame("UTS", [
       [
-        sg.Button("UTS", size=(24, 1), key="UTS")
+        sg.Button("UTS", size=(22, 1), key="UTS")
       ],
       [
         sg.Text("a1:", visible = True),
-        sg.In(size=(7, 1), enable_events=True, key="utsAlpha1", visible = True, default_text="1"),
+        sg.In(size=(6, 1), enable_events=True, key="utsAlpha1", visible = True, default_text="1"),
         sg.Text("a2:", visible = True,),
-        sg.In(size=(8, 1), enable_events=True, key="utsAlpha2", visible = True, default_text="1"),
+        sg.In(size=(7, 1), enable_events=True, key="utsAlpha2", visible = True, default_text="1"),
       ],
       [
         sg.Text("Note: value 0.0 - 1", visible = True, font = ("OpenSans", 8)),
       ]
     ], font = ("OpenSans", 10)),
   ],
+  [
+    sg.Frame('Filter', [
+      [
+        sg.Button("Max", size=(10, 1), key="MaxFilter"),
+        sg.Button("Min", size=(10, 1), key="MinFilter"),
+      ],
+      [
+        sg.Button("Median", size=(10, 1), key="MedianFilter"),
+        sg.Button("Mean", size=(10, 1), key="MeanFilter"),
+      ],
+      [
+        sg.Button("Sobel", size=(10, 1), key="SobelFilter"),
+        sg.Button("Prewitt", size=(10, 1), key="PrewittFilter"),
+      ],
+      [
+        sg.Button("Robert", size=(10, 1), key="RobertFilter"),
+        sg.Button("Laplacian", size=(10, 1), key="LaplacianFilter"),
+      ],
+      [
+        sg.Button("Scharr", size=(10, 1), key="ScharrFilter"),
+        sg.Button("Gaussian", size=(10, 1), key="GaussianFilter"),
+      ],
+      [
+        sg.Button("Compass", size=(10, 1), key="CompassFilter"),
+        # sg.Button("Erosian", size=(10, 1), key="Erosian"),
+      ]
+    ], font = ("OpenSans", 10))
+  ],
+  # [
+  #   sg.Frame('Tambahan', [
+  #     [
+  #       sg.Button("Max", size=(10, 1), key="MaxFilter"),
+  #       sg.Button("Min", size=(10, 1), key="MinFilter"),
+  #     ],
+  #     [
+  #       sg.Button("HSV", size=(10, 1), key="HSV"),
+  #     ]
+  #   ], font = ("OpenSans", 10))
+  # ],
 ]
 # Gabung Full layout
 layout = [
@@ -724,57 +774,55 @@ while True:
   elif event == "UTS":
     try:
       window["ImgProcessingType"].update("UTS")
-      # img_output=reverse_x_simbol_negative(img_input,coldepth)
       alpha1 = values["utsAlpha1"]
       alpha2 = values["utsAlpha2"]
       img_output=uts_1(img_input, coldepth, img_input1, coldepth1, alpha1, alpha2)
-      # img_output=uts_1(img_input, coldepth, img_input1, coldepth1)
-        
+      
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "MaxFilter":
+    try:
+      window["ImgProcessingType"].update("Max Filter")
+      img_output=Max_Filter(img_input, coldepth)
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "MinFilter":
+    try:
+      window["ImgProcessingType"].update("Min Filter")
+      img_output=Min_Filter(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
       pass
     
   elif event == "MedianFilter":
-    
+    try:
       window["ImgProcessingType"].update("Median Filter")
-      
-      img_output=Median(img_input, coldepth)
-      
+      img_output=Median_Filter(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
-      
+    except:
+      pass
+    
   elif event == "MeanFilter":
-    
+    try:
       window["ImgProcessingType"].update("Mean Filter")
-      
-      img_output=Mean(img_input, coldepth)
-      
+      img_output=Mean_Filter(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
-      
-  elif event == "MaxFilter":
+    except:
+      pass
     
-      window["ImgProcessingType"].update("Max Filter")
-      
-      img_output=Max(img_input, coldepth)
-      
-      img_output.save(filename_out)
-      window["ImgOutputViewer"].update(filename=filename_out)
-      
-  elif event == "MinFilter":
-    
-      window["ImgProcessingType"].update("Min Filter")
-      
-      img_output=Min(img_input, coldepth)
-      
-      img_output.save(filename_out)
-      window["ImgOutputViewer"].update(filename=filename_out)
-      
   elif event == "SobelFilter":
     try:
       window["ImgProcessingType"].update("Sobel Detection")
-      img_output=Edge(img_input,coldepth, "sobel")
+      img_output=Sobel_Edge(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
@@ -783,7 +831,7 @@ while True:
   elif event == "PrewittFilter":
     try:
       window["ImgProcessingType"].update("Prewitt Detection")
-      img_output=Edge(img_input,coldepth, "prewitt")
+      img_output=Prewitt_Edge(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
@@ -792,7 +840,7 @@ while True:
   elif event == "LaplacianFilter":
     try:
       window["ImgProcessingType"].update("Laplacian Detection")
-      img_output=Edge(img_input,coldepth, "laplacian")
+      img_output=Laplacian_Edge(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
@@ -801,7 +849,7 @@ while True:
   elif event == "ScharrFilter":
     try:
       window["ImgProcessingType"].update("Scharr Detection")
-      img_output=Edge(img_input,coldepth, "scharr")
+      img_output=Scharr_Edge(img_input, coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
@@ -810,7 +858,7 @@ while True:
   elif event == "RobertFilter":
     try:
       window["ImgProcessingType"].update("Robert Detection")
-      img_output=Edge(img_input,coldepth, "robert")
+      img_output=Robert_Edge(img_input,coldepth)
       img_output.save(filename_out)
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
@@ -824,5 +872,23 @@ while True:
       window["ImgOutputViewer"].update(filename=filename_out)
     except:
       pass
-
+    
+  elif event == "CompassFilter":
+    try:
+      window["ImgProcessingType"].update("Compass Filter")
+      img_output=CompassOperator(img_input, coldepth)
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
+  elif event == "HSV":
+    try:
+      window["ImgProcessingType"].update("Compass Filter")
+      img_output=hsv(img_input, coldepth)
+      img_output.save(filename_out)
+      window["ImgOutputViewer"].update(filename=filename_out)
+    except:
+      pass
+    
 # github.com/dharmasaputraa
