@@ -1117,14 +1117,14 @@ while True:
         except:
             pass
 
-    elif event == "HSV":
-        try:
-            window["ImgProcessingType"].update("Compass Filter")
-            img_output = hsv(img_input, coldepth)
-            img_output.save(filename_out)
-            window["ImgOutputViewer"].update(filename=filename_out)
-        except:
-            pass
+    # elif event == "HSV":
+    #     try:
+    #         window["ImgProcessingType"].update("Compass Filter")
+    #         img_output = hsv(img_input, coldepth)
+    #         img_output.save(filename_out)
+    #         window["ImgOutputViewer"].update(filename=filename_out)
+    #     except:
+    #         pass
 
     elif event == "Delusi":
         try:

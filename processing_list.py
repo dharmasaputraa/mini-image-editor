@@ -991,6 +991,142 @@ def bubble_sort(array):
 #     return img_output
 
 
+def Median_Filter(img_input, coldepth):
+    if coldepth != 24:
+        img_input = img_input.convert("RGB")
+
+    row = int(img_input.size[0])
+    col = int(img_input.size[1])
+
+    img_output = Image.new("RGB", (row, col))
+
+    # memberi padding (alternatif)
+    # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
+
+    # sulusi memberi border 2
+    img_bordered = Image.new("RGB", (row + 2, col + 2))
+    pixels = img_bordered.load()
+    pixels_input = img_input.load()
+
+    for i in range(img_input.size[0] - 1):
+        for j in range(img_input.size[1] - 1):
+            x = 1 + i
+            y = 1 + j
+            r1, g1, b1 = pixels_input[(i, j)]
+            if (
+                x >= 0
+                and x < img_bordered.size[0]
+                and y >= 0
+                and y < img_bordered.size[1]
+            ):
+                r, g, b = pixels[x, y]
+                pixels[x, y] = (r1, g1, b1)
+
+    print(row)
+    print(col)
+
+    print(img_bordered.size[0])
+    print(img_bordered.size[1])
+
+    mask = [(0, 0)] * 9
+    for i in range(1, row + 1):
+        for j in range(1, col + 1):
+            mask[0] = img_bordered.getpixel((i - 1, j - 1))
+            mask[1] = img_bordered.getpixel((i - 1, j))
+            mask[2] = img_bordered.getpixel((i - 1, j + 1))
+            mask[3] = img_bordered.getpixel((i, j - 1))
+            mask[4] = img_bordered.getpixel((i, j))
+            mask[5] = img_bordered.getpixel((i, j + 1))
+            mask[6] = img_bordered.getpixel((i + 1, j - 1))
+            mask[7] = img_bordered.getpixel((i + 1, j))
+            mask[8] = img_bordered.getpixel((i + 1, j + 1))
+
+            # alternatif
+            # mask.sort()
+
+            array = bubble_sort(mask)
+
+            img_output.putpixel((i - 1, j - 1), (mask[4]))
+
+    return img_output
+
+
+# Linar Filter
+def Mean_Filter(img_input, coldepth):
+    if coldepth != 24:
+        img_input = img_input.convert("RGB")
+
+    row = int(img_input.size[0])
+    col = int(img_input.size[1])
+
+    img_output = Image.new("RGB", (row, col))
+
+    # memberi border (alternatif)
+    # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
+
+    # github.com/dharmasaputraa
+    # sulusi memberi border 2
+    img_bordered = Image.new("RGB", (row + 2, col + 2))
+    pixels = img_bordered.load()
+    pixels_input = img_input.load()
+
+    for i in range(img_input.size[0]):
+        for j in range(img_input.size[1]):
+            x = 1 + i
+            y = 1 + j
+            r1, g1, b1 = pixels_input[i, j]
+            if (
+                x >= 0
+                and x < img_bordered.size[0]
+                and y >= 0
+                and y < img_bordered.size[1]
+            ):
+                r, g, b = pixels[x, y]
+                pixels[x, y] = (r1, g1, b1)
+
+    # img_bordered.show()
+
+    pixels = img_output.load()
+
+    mask = [(0, 0)] * 9
+
+    for i in range(1, row + 1):
+        for j in range(1, col + 1):
+            red = 0
+            green = 0
+            blue = 0
+            mask[0] = img_bordered.getpixel((i - 1, j - 1))
+            mask[1] = img_bordered.getpixel((i - 1, j))
+            mask[2] = img_bordered.getpixel((i - 1, j + 1))
+            mask[3] = img_bordered.getpixel((i, j - 1))
+            mask[4] = img_bordered.getpixel((i, j))
+            mask[5] = img_bordered.getpixel((i, j + 1))
+            mask[6] = img_bordered.getpixel((i + 1, j - 1))
+            mask[7] = img_bordered.getpixel((i + 1, j))
+            mask[8] = img_bordered.getpixel((i + 1, j + 1))
+
+            for k in range(8):
+                r, g, b = mask[k]
+                red = red + r
+                green = green + g
+                blue = blue + b
+
+            red = int(red * 1 / 9)
+            green = int(green * 1 / 9)
+            blue = int(blue * 1 / 9)
+
+            pixels[i - 1, j - 1] = (red, green, blue)
+
+    if coldepth == 1:
+        img_output = img_output.convert("1")
+    elif coldepth == 8:
+        img_output = img_output.convert("L")
+    else:
+        img_output = img_output.convert("RGB")
+
+    return img_output
+
+
 def Robert_Edge(img_input, coldepth):
     img_input = img_input.convert("L")
 
