@@ -374,6 +374,7 @@ list_processing = [
                 ],
             ],
             font=("OpenSans", 10),
+            visible=True,
         )
     ]
 ]
@@ -507,9 +508,6 @@ list_processing_2 = [
                 ],
                 [
                     sg.Button("Scharr", size=(10, 1), key="ScharrFilter"),
-                    sg.Button("Compass", size=(10, 1), key="CompassFilter"),
-                ],
-                [
                     sg.Button("Compass", size=(10, 1), key="CompassFilter"),
                 ],
                 [
@@ -1102,13 +1100,13 @@ while True:
             pass
 
     elif event == "GaussianFilter":
-        try:
-            window["ImgProcessingType"].update("Gaussian Filter")
-            img_output = Gaussian(img_input, coldepth, 1)
-            img_output.save(filename_out)
-            window["ImgOutputViewer"].update(filename=filename_out)
-        except:
-            pass
+        # try:
+        window["ImgProcessingType"].update("Gaussian Filter")
+        img_output = Gaussian(img_input, coldepth, 1)
+        img_output.save(filename_out)
+        window["ImgOutputViewer"].update(filename=filename_out)
+    # except:
+    #     pass
 
     elif event == "CompassFilter":
         try:
@@ -1167,22 +1165,22 @@ while True:
             pass
 
     elif event == "WhiteTopHat":
-        try:
-            window["ImgProcessingType"].update("White Top Hat Filter")
-            img_output = WhiteTopHat(img_input, coldepth)
-            img_output.save(filename_out)
-            window["ImgOutputViewer"].update(filename=filename_out)
-        except:
-            pass
+        # try:
+        window["ImgProcessingType"].update("White Top Hat Filter")
+        img_output = WhiteTopHat(img_input, coldepth)
+        img_output.save(filename_out)
+        window["ImgOutputViewer"].update(filename=filename_out)
+    # except:
+    #     pass
 
     elif event == "BlackTopHat":
-        try:
-            window["ImgProcessingType"].update("Black Top Hat Filter")
-            img_output = BlackTopHat(img_input, coldepth)
-            img_output.save(filename_out)
-            window["ImgOutputViewer"].update(filename=filename_out)
-        except:
-            pass
+        # try:
+        window["ImgProcessingType"].update("Black Top Hat Filter")
+        img_output = BlackTopHat(img_input, coldepth)
+        img_output.save(filename_out)
+        window["ImgOutputViewer"].update(filename=filename_out)
+    # except:
+    #     pass
 
 
 # github.com/dharmasaputraa
