@@ -1808,6 +1808,8 @@ def Opening(img_input, coldepth):
     img_output = Min_Filter(img_output, coldepth)
     img_output = Max_Filter(img_output, coldepth)
 
+    # img_output = Max_Filter(Min_Filter(img_input, coldepth), coldepth)
+
     # img_output = dilation(erosion(img_input, coldepth), coldepth)
     return img_output
 
@@ -1816,6 +1818,8 @@ def Closing(img_input, coldepth):
     img_output = Max_Filter(img_input, coldepth)
     img_output = Max_Filter(img_output, coldepth)
     img_output = Min_Filter(img_output, coldepth)
+
+    # img_output = Min_Filter(Max_Filter(img_input, coldepth), coldepth)
 
     # img_output = erosion(dilation(img_input, coldepth), coldepth)
     return img_output
