@@ -313,22 +313,11 @@ list_processing = [
                                 sg.Button(">", size=(4, 1), key="ImgBlendProcess"),
                             ],
                             [
-                                sg.Text("a1:", visible=True),
+                                sg.Text("a:", visible=True),
                                 sg.In(
                                     size=(7, 1),
                                     enable_events=True,
                                     key="alpha1",
-                                    visible=True,
-                                    default_text="1",
-                                ),
-                                sg.Text(
-                                    "a2:",
-                                    visible=True,
-                                ),
-                                sg.In(
-                                    size=(8, 1),
-                                    enable_events=True,
-                                    key="alpha2",
                                     visible=True,
                                     default_text="1",
                                 ),
@@ -456,22 +445,11 @@ list_processing_2 = [
             [
                 [sg.Button("UTS", size=(22, 1), key="UTS")],
                 [
-                    sg.Text("a1:", visible=True),
+                    sg.Text("a:", visible=True),
                     sg.In(
                         size=(6, 1),
                         enable_events=True,
                         key="utsAlpha1",
-                        visible=True,
-                        default_text="1",
-                    ),
-                    sg.Text(
-                        "a2:",
-                        visible=True,
-                    ),
-                    sg.In(
-                        size=(7, 1),
-                        enable_events=True,
-                        key="utsAlpha2",
                         visible=True,
                         default_text="1",
                     ),
@@ -860,14 +838,13 @@ while True:
         window["ImgProcessingType"].update("Image Blend")
 
         alpha1 = float(values["alpha1"])
-        alpha2 = float(values["alpha2"])
         x1 = int(values["x1"])
         y1 = int(values["y1"])
 
         coldepth2 = mode_to_coldepth[img_input1.mode]
 
         img_output = ImgBlend(
-            img_input, coldepth, img_input1, coldepth2, alpha1, alpha2, x1, y1
+            img_input, coldepth, img_input1, coldepth2, alpha1, x1, y1
         )
 
         img_output.save(filename_out)
@@ -1005,18 +982,15 @@ while True:
             pass
 
     elif event == "UTS":
-        try:
-            window["ImgProcessingType"].update("UTS")
-            alpha1 = values["utsAlpha1"]
-            alpha2 = values["utsAlpha2"]
-            img_output = uts_1(
-                img_input, coldepth, img_input1, coldepth1, alpha1, alpha2
-            )
+        # try:
+        window["ImgProcessingType"].update("UTS")
+        alpha1 = values["utsAlpha1"]
+        img_output = uts_1(img_input, coldepth, img_input1, coldepth1, alpha1)
 
-            img_output.save(filename_out)
-            window["ImgOutputViewer"].update(filename=filename_out)
-        except:
-            pass
+        img_output.save(filename_out)
+        window["ImgOutputViewer"].update(filename=filename_out)
+    # except:
+    #     pass
 
     elif event == "MaxFilter":
         try:

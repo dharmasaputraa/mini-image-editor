@@ -513,7 +513,7 @@ def ZoomOut(img_input, coldepth, scaleVal):
     return img_output
 
 
-def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2, posX, posY):
+def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, posX, posY):
     if coldepth != 24:
         img_input = img_input.convert("RGB")
     if coldepth2 != 24:
@@ -536,9 +536,9 @@ def ImgBlend(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2, posX, p
             r1, g1, b1 = img_input2.getpixel((i, j))
             if x >= 0 and x < img_output.size[0] and y >= 0 and y < img_output.size[1]:
                 r, g, b = pixels[x, y]
-                r1 = int(r * alpha1) + int(r1 * alpha2)
-                g1 = int(g * alpha1) + int(g1 * alpha2)
-                b1 = +int(b * alpha1) + int(b1 * alpha2)
+                r1 = int((1 - alpha1) * r + alpha1 * r1)
+                g1 = int((1 - alpha1) * g + alpha1 * g1)
+                b1 = int((1 - alpha1) * b + alpha1 * b1)
                 pixels[x, y] = (r1, g1, b1)
 
     if coldepth == 1:
@@ -821,9 +821,8 @@ def reverse_x_simbol_negative(img_input, coldepth):
     return img_output
 
 
-def uts_1(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2):
+def uts_1(img_input, coldepth, img_input2, coldepth2, alpha1):
     alpha1 = float(alpha1)
-    alpha2 = float(alpha2)
 
     if coldepth != 24:
         img_input = img_input.convert("RGB")
@@ -843,7 +842,7 @@ def uts_1(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2):
     # Membuat image2 menjadi negatif
     img_negatived = ImgNegative(img_input2, coldepth2)
 
-    # Mencari titik tengah pada image2 negatif
+    # Mencari titik tengah pada image
     center_x = (
         img_output.size[0] - img_negatived.size[0]
     ) // 2  # posisi x tengah berada pada 1/4 dari lebar gambar
@@ -854,10 +853,9 @@ def uts_1(img_input, coldepth, img_input2, coldepth2, alpha1, alpha2):
     img_output = ImgBlend(
         img_output,
         coldepth,
-        img_input2,
         img_negatived,
+        coldepth2,
         alpha1,
-        alpha2,
         center_x,
         center_y,
     )
@@ -1064,7 +1062,6 @@ def Mean_Filter(img_input, coldepth):
     # memberi border (alternatif)
     # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
 
-    # github.com/dharmasaputraa
     # sulusi memberi border 2
     img_bordered = Image.new("RGB", (row + 2, col + 2))
     pixels = img_bordered.load()
@@ -1448,16 +1445,13 @@ def CompassOperator(img_input, coldepth):
 
     for direction in directions:
         mask = masks[direction]
-        for i in range(img_input.size[0] - 2):
-            for j in range(img_input.size[1] - 2):
+        for i in range(img_input.size[0] - 1):
+            for j in range(img_input.size[1] - 1):
                 value = 0
-
                 for x in range(3):
                     for y in range(3):
-                        value += img_input.getpixel((i + x, j + y)) * mask[x][y]
-
+                        value += img_input.getpixel((i + x - 1, j + y - 1)) * mask[x][y]
                 value = abs(value)
-
                 if value > 255:
                     value = 255
 
@@ -1481,27 +1475,6 @@ def Gaussian(img_input, coldepth, sigma=1):
     col = int(img_input.size[1])
 
     img_output = Image.new("RGB", (row, col))
-
-    # memberi border (alternatif)
-    # img_bordered = ImageOps.expand(img_input, border=1, fill="Black")
-
-    # sulusi memberi border 2
-    img_bordered = Image.new("RGB", (row + 2, col + 2))
-    pixels = img_bordered.load()
-
-    for i in range(img_input.size[0]):
-        for j in range(img_input.size[1]):
-            x = 1 + i
-            y = 1 + j
-            r1, g1, b1 = img_input.getpixel((i, j))
-            if (
-                x >= 0
-                and x < img_bordered.size[0]
-                and y >= 0
-                and y < img_bordered.size[1]
-            ):
-                r, g, b = pixels[x, y]
-                pixels[x, y] = (r1, g1, b1)
 
     pixels = img_output.load()
 
@@ -1562,9 +1535,6 @@ def Gaussian(img_input, coldepth, sigma=1):
         img_output = img_output.convert("RGB")
 
     return img_output
-
-
-# github.com/dharmasaputraa
 
 
 def erosion(img_input, coldepth):
@@ -1804,7 +1774,7 @@ def Min_Filter(img_input, coldepth):
 
 
 def Opening(img_input, coldepth):
-    img_output = Min_Filter(img_input, coldepth)
+    img_output = Min_Filter(img_input, coldepth)  #
     img_output = Min_Filter(img_output, coldepth)
     img_output = Max_Filter(img_output, coldepth)
 
